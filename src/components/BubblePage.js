@@ -27,6 +27,7 @@ const BubblePage = () => {
 	return (
 		<>
 			<ColorList
+				data-testId="test-2"
 				colors={colorList}
 				updateColors={setColorList}
 				getColorList={getColorList}

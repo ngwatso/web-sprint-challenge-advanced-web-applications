@@ -15,7 +15,7 @@ const Login = () => {
 		},
 	};
 
-	// const { setError, errors } = useForm({ mode: 'onSubmit' });
+	// const { errors } = useForm({ mode: 'onSubmit' });
 
 	const [state, setState] = useState(initialState);
 
@@ -82,6 +82,7 @@ const Login = () => {
 						onChange={handleChange}
 					/>
 				</label>
+				{/* <p>{err.message}</p> */}
 
 				<label>
 					password:
