@@ -1,18 +1,29 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-import Bubbles from "./Bubbles";
-import ColorList from "./ColorList";
+import Bubbles from './Bubbles';
+import ColorList from './ColorList';
 
 const BubblePage = () => {
-  const [colorList, setColorList] = useState([]);
+	const [colorList, setColorList] = useState([]);
 
-  return (
-    <>
-      <ColorList colors={colorList} updateColors={setColorList} />
-      <Bubbles colors={colorList} />
-    </>
-  );
+	useEffect(() => {
+		axios.get('http://localhost:5000/api/colors')
+			.then((res) => {
+				console.log('BubblePage.js: colors =====> ', res);
+				setColorList(res);
+			})
+			.catch((err) =>
+				console.error('unable to get color data ', err.message)
+			);
+	}, []);
+
+	return (
+		<>
+			<ColorList colors={colorList} updateColors={setColorList} />
+			<Bubbles colors={colorList} />
+		</>
+	);
 };
 
 export default BubblePage;
