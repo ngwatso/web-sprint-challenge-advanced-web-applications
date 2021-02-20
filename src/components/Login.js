@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
+import axiosWithAuth from '../helpers/axiosWithAuth';
 import { useHistory } from 'react-router-dom';
+// import { useForm } from 'react-hook-form';
 
 const Login = () => {
 	// * make a post request to retrieve a token from the api
@@ -12,6 +14,8 @@ const Login = () => {
 			password: '',
 		},
 	};
+
+	// const { setError, errors } = useForm({ mode: 'onSubmit' });
 
 	const [state, setState] = useState(initialState);
 
@@ -28,41 +32,46 @@ const Login = () => {
 
 	const login = (e) => {
 		e.preventDefault();
-		axios.post('http://localhost:5000/api/login', state.credentials)
+		axiosWithAuth()
+			.post('http://localhost:5000/api/login', state.credentials)
 			.then((res) => {
 				console.log('Login.js: axios post =====> ', res);
 				localStorage.setItem('token', res.data.payload);
 				history.push('/protected');
 			})
 			.catch((err) =>
-				console.err('Username or Password not valid.', err.message)
+				console.error(
+					'Username or Password not valid.',
+					err.message
+				)
 			);
 	};
 
 	useEffect(() => {
-		axios.delete(`http://localhost:5000/api/colors/1`, {
-			headers: {
-				authorization:
-					'ahuBHejkJJiMDhmODZhZi0zaeLTQ4ZfeaseOGZgesai1jZWYgrTA07i73Gebhu98',
-			},
-		}).then((res) => {
-			axios.get(`http://localhost:5000/api/colors`, {
+		axiosWithAuth()
+			.delete(`http://localhost:5000/api/colors/1`, {
 				headers: {
-					authorization: '',
+					authorization:
+						'ahuBHejkJJiMDhmODZhZi0zaeLTQ4ZfeaseOGZgesai1jZWYgrTA07i73Gebhu98',
 				},
-			}).then((res) => {
+			})
+			.then((res) => {
+				axiosWithAuth()
+					.get(`http://localhost:5000/api/colors`, {
+						headers: {
+							authorization: '',
+						},
+					})
+					.then((res) => {
+						console.log(res);
+					});
 				console.log(res);
 			});
-			console.log(res);
-		});
 	});
 
 	return (
 		<>
-			<h1>
-				Welcome to the Bubble App!
-				<p>Log In</p>
-			</h1>
+			<h1>Welcome to the Bubble App!</h1>
 			<form onSubmit={login}>
 				<label>
 					username:
@@ -73,6 +82,7 @@ const Login = () => {
 						onChange={handleChange}
 					/>
 				</label>
+
 				<label>
 					password:
 					<input
@@ -90,9 +100,9 @@ const Login = () => {
 
 export default Login;
 
-//Task List:
+// * Task List:
 // * 1. Build a form containing a username and password field.
 // * 2. Add whatever state nessiary for form functioning.
 // * 3. MAKE SURE THAT FORM INPUTS INCLUDE THE LABEL TEXT "username" and "password" RESPECTIVELY.
 // * 4. If either the username or password is not displaied display EXACTLY the following words: Username or Password not valid.
-//5. If the username / password is equal to Lambda School / i<3Lambd4, save that token to localStorage.
+// * 5. If the username / password is equal to Lambda School / i<3Lambd4, save that token to localStorage.

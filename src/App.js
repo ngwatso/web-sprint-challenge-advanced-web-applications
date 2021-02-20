@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Login from './components/Login';
@@ -23,5 +23,5 @@ function App() {
 
 export default App;
 
-//Task List:
-//1. Render BubblePage as a PrivateRoute
+// * Task List:
+// * 1. Render BubblePage as a PrivateRoute
