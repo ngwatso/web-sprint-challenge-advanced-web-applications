@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-// import axios from 'axios';
 import axiosWithAuth from '../helpers/axiosWithAuth';
 import EditMenu from './EditMenu';
-// import { useParams, useHistory } from 'react-router-dom';
 
 const initialColor = {
 	color: '',
@@ -14,9 +12,6 @@ const ColorList = ({ colors, updateColors, getColorList }) => {
 	const [editing, setEditing] = useState(false);
 	const [colorToEdit, setColorToEdit] = useState(initialColor);
 
-	// const { id } = useParams();
-	// const history = useHistory();
-
 	const editColor = (color) => {
 		setEditing(true);
 		setColorToEdit(color);
@@ -24,17 +19,16 @@ const ColorList = ({ colors, updateColors, getColorList }) => {
 
 	const saveEdit = (e) => {
 		e.preventDefault();
+		// ?? Use axiosWithAuth
 		axiosWithAuth()
 			.put(
+				// ?? put - path to colorToEdit.id
 				`http://localhost:5000/api/colors/${colorToEdit.id}`,
 				colorToEdit
 			)
 			.then((res) => {
-				// updateColors();
+				// ?? call getColorList function
 				getColorList();
-				// history.push('/colors');
-
-				// return colors;
 			})
 			.catch((err) =>
 				console.error(`unable to edit color: ${colorToEdit}`)
@@ -42,13 +36,13 @@ const ColorList = ({ colors, updateColors, getColorList }) => {
 	};
 
 	const deleteColor = (color) => {
+		// ?? Use axiosWithAuth
 		axiosWithAuth()
+			// ?? delete - path to color.id
 			.delete(`http://localhost:5000/api/colors/${color.id}`)
 			.then((res) => {
-				// updateColors();
+				// ?? Call getColorList function
 				getColorList();
-				// history.push('/colors');
-				// return colors;
 			});
 	};
 	console.log('colorList =====> ', colors);

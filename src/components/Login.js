@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
 import axiosWithAuth from '../helpers/axiosWithAuth';
 import { useHistory } from 'react-router-dom';
-// import { useForm } from 'react-hook-form';
 
 const Login = () => {
 	// * make a post request to retrieve a token from the api
 	// * when you have handled the token, navigate to the BubblePage route
 
+	// ?? Set initialState
 	const initialState = {
 		credentials: {
 			username: '',
@@ -15,12 +14,13 @@ const Login = () => {
 		},
 	};
 
-	// const { errors } = useForm({ mode: 'onSubmit' });
-
+	// ?? Set state, utilizing initialState
 	const [state, setState] = useState(initialState);
 
+	// ?? Set history for redirecting
 	const history = useHistory();
 
+	// ?? handleChanges
 	const handleChange = (e) => {
 		setState({
 			credentials: {
@@ -32,15 +32,20 @@ const Login = () => {
 
 	const login = (e) => {
 		e.preventDefault();
+		// ?? Use axiosWithAuth
 		axiosWithAuth()
+			// ?? post - path to login, using state.credentials for second parameter
 			.post('http://localhost:5000/api/login', state.credentials)
 			.then((res) => {
 				console.log('Login.js: axios post =====> ', res);
+				// ?? Set 'token' to localStorage
 				localStorage.setItem('token', res.data.payload);
+				// ?? Redirect to BubblePage (protected path)
 				history.push('/protected');
 			})
 			.catch((err) =>
 				console.error(
+					// ?? Error message for invalid credentials
 					'Username or Password not valid.',
 					err.message
 				)
@@ -72,6 +77,7 @@ const Login = () => {
 	return (
 		<>
 			<h1>Welcome to the Bubble App!</h1>
+			{/* // ?? Login form */}
 			<form onSubmit={login}>
 				<label>
 					username:
