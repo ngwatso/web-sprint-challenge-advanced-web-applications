@@ -11,11 +11,15 @@ const Login = () => {
 		credentials: {
 			username: '',
 			password: '',
+			error: '',
 		},
 	};
 
 	// ?? Set state, utilizing initialState
 	const [state, setState] = useState(initialState);
+
+	// ?? Set error state
+	const [error, setError] = useState(initialState.error);
 
 	// ?? Set history for redirecting
 	const history = useHistory();
@@ -43,13 +47,15 @@ const Login = () => {
 				// ?? Redirect to BubblePage (protected path)
 				history.push('/protected');
 			})
-			.catch((err) =>
+			.catch((err) => {
 				console.error(
 					// ?? Error message for invalid credentials
 					'Username or Password not valid.',
 					err.message
-				)
-			);
+				);
+				// ?? Set erroe message
+				setError({ error: err.message });
+			});
 	};
 
 	useEffect(() => {
@@ -88,7 +94,6 @@ const Login = () => {
 						onChange={handleChange}
 					/>
 				</label>
-				{/* <p>{err.message}</p> */}
 
 				<label>
 					password:
@@ -100,6 +105,7 @@ const Login = () => {
 					/>
 				</label>
 				<button>Log In</button>
+				{error && <p>Username or Password not valid.</p>}
 			</form>
 		</>
 	);
