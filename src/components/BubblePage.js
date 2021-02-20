@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
 import axiosWithAuth from '../helpers/axiosWithAuth';
 
 import Bubbles from './Bubbles';
